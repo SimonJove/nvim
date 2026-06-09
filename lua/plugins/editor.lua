@@ -35,8 +35,9 @@ return {
         { "<leader>c", group = "code" },
         { "<leader>b", group = "buffer" },
         { "<leader>g", group = "git" },
-        { "<leader>x", group = "diagnostics" },
         { "<leader>u", group = "toggle" },
+        { "]", group = "next" },
+        { "[", group = "prev" },
       },
     },
   },
@@ -155,7 +156,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = "Yazi",
     keys = {
-      { "<leader>-", "<cmd>Yazi<CR>", desc = "yazi file manager" },
+      { "<leader>-", "<cmd>Yazi<CR>", desc = "Yazi file manager" },
     },
     opts = {
       open_for_directories = false,
@@ -169,7 +170,7 @@ return {
     "mbbill/undotree",
     cmd = "UndotreeToggle",
     keys = {
-      { "<leader>z", "<cmd>UndotreeToggle<CR>", desc = "undo history tree" },
+      { "<leader>z", "<cmd>UndotreeToggle<CR>", desc = "Undotree" },
     },
   },
 

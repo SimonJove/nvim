@@ -32,15 +32,17 @@ return {
     },
   },
 
-  -- auto-install formatting tools
+  -- auto-install formatting tools (manual: run :MasonToolsInstall once after a fresh clone).
+  -- Was event="VeryLazy" + run_on_start=true, but under VeryLazy the VimEnter run_on_start
+  -- hook never fires (VimEnter already passed), so auto-install was silently dead AND mason
+  -- got pulled into every startup for nothing. cmd-only keeps mason out of the boot path.
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     dependencies = { "mason-org/mason.nvim" },
-    cmd = { "MasonToolsInstall", "MasonToolsUpdate" },
-    event = "VeryLazy",
+    cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsUpdateSync", "MasonToolsClean" },
     opts = {
       ensure_installed = { "stylua", "prettier", "ruff" },
-      run_on_start = true,
+      run_on_start = false,
     },
   },
 

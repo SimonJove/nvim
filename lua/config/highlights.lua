@@ -1,192 +1,114 @@
--- Custom highlight overrides and additions
--- To find any highlight groups: "<cmd> Telescope highlights"
--- Each highlight group can take a table with variables fg, bg, bold, italic, etc
--- base30 variable names can also be used as colors
-
-local colors = require("config.palette")
-local c = colors.semantic
-local cp = colors.catppuccin
-local ts = colors.treesitter
+-- Custom highlight overrides and additions (catppuccin mocha).
+--
+-- Colors are resolved from config.palette (catppuccin mocha palette + custom shades)
+-- inside apply(), which the ColorScheme autocmd in config.autocmds runs after the theme
+-- loads, so these overrides are re-applied on top of catppuccin.
+--
+-- To find highlight group names: :Telescope highlights
+local palette = require("config.palette")
 
 local M = {}
 
----@type HLTable
-M.override = {
-  -- Don't override Normal here - let transparency work
-  -- Background is handled by autocmd in options.lua
-  CursorLine = {
-    bg = c.cursor_line,
-  },
-  Comment = {
-    italic = true,
-    fg = c.comment,
-  },
+-- Build the override + add tables for the currently active flavour.
+local function build()
+  local c = palette.get() -- catppuccin colors + custom UI shades for the active flavour
 
-  -- Enhanced syntax highlighting for more vibrant colors
-  Keyword = {
-    fg = c.keyword,
-    bold = true,
-  },
-  Function = {
-    fg = c.func,
-    bold = true,
-  },
-  String = {
-    fg = c.string,
-  },
-  Number = {
-    fg = c.number,
-  },
-  Boolean = {
-    fg = c.bool,
-  },
-  Type = {
-    fg = c.type,
-    bold = true,
-  },
-  Constant = {
-    fg = c.constant,
-  },
-  Variable = {
-    fg = c.variable,
-  },
-  Operator = {
-    fg = c.operator,
-  },
-  Special = {
-    fg = cp.flamingo,
-  },
-  PreProc = {
-    fg = cp.teal,
-  },
-  Identifier = {
-    fg = cp.text,
-  },
-  -- Improve fold colors
-  Folded = {
-    bg = c.cursor_line,
-    fg = cp.subtext1,
-  },
-  -- Better search highlighting
-  Search = {
-    bg = cp.yellow,
-    fg = cp.base,
-  },
-  IncSearch = {
-    bg = cp.blue,
-    fg = cp.base,
-  },
-  -- Terminal colors consistency
-  Terminal = {
-    bg = "#141b26",
-    fg = "white",
-  },
-  -- Transparent sign column and line numbers for transparency support
-  SignColumn = {
-    bg = "NONE",
-  },
-  LineNrAbove = {
-    bg = "NONE",
-  },
-  LineNrBelow = {
-    bg = "NONE",
-  },
-}
+  -- Don't override Normal here — transparency is handled by the autocmd in config.autocmds.
+  local override = {
+    CursorLine = { bg = c.cursor_line },
+    Comment = { fg = c.blue, italic = true },
 
----@type HLTable
-M.add = {
-  NvimTreeOpenedFolderName = { fg = "green", bold = true },
+    -- vibrant syntax
+    Keyword = { fg = c.mauve, bold = true },
+    Function = { fg = c.blue, bold = true },
+    String = { fg = c.green },
+    Number = { fg = c.peach },
+    Boolean = { fg = c.red },
+    Type = { fg = c.yellow, bold = true },
+    Constant = { fg = c.peach },
+    Variable = { fg = c.text },
+    Operator = { fg = c.sky },
+    Special = { fg = c.flamingo },
+    PreProc = { fg = c.teal },
+    Identifier = { fg = c.text },
 
-  -- TreeSitter highlight groups for more vibrant syntax highlighting
-  ["@keyword"] = { fg = ts.keyword, bold = true },
-  ["@function"] = { fg = ts.func, bold = true },
-  ["@function.call"] = { fg = ts.func },
-  ["@method"] = { fg = ts.func, bold = true },
-  ["@method.call"] = { fg = ts.func },
-  ["@string"] = { fg = ts.string },
-  ["@string.regex"] = { fg = ts.type },
-  ["@number"] = { fg = ts.number },
-  ["@boolean"] = { fg = ts.boolean },
-  ["@type"] = { fg = ts.type, bold = true },
-  ["@type.builtin"] = { fg = ts.type_builtin },
-  ["@constant"] = { fg = ts.constant },
-  ["@constant.builtin"] = { fg = ts.constant_builtin, bold = true },
-  ["@variable"] = { fg = ts.variable },
-  ["@variable.builtin"] = { fg = ts.variable_builtin },
-  ["@operator"] = { fg = ts.operator },
-  ["@punctuation"] = { fg = ts.punctuation },
-  ["@punctuation.bracket"] = { fg = cp.cyan },
-  ["@comment"] = { fg = c.comment, italic = true },
-  ["@tag"] = { fg = ts.tag },
-  ["@tag.attribute"] = { fg = ts.attribute },
-  ["@property"] = { fg = ts.property },
-  ["@parameter"] = { fg = ts.parameter, italic = true },
-  ["@field"] = { fg = ts.field },
-  ["@namespace"] = { fg = ts.namespace },
-  ["@include"] = { fg = cp.teal },
-  ["@conditional"] = { fg = ts.keyword, bold = true },
-  ["@repeat"] = { fg = ts.keyword, bold = true },
-  ["@exception"] = { fg = cp.red, bold = true },
-  -- Enhanced floating window colors
-  NormalFloat = {
-    bg = "#0f1419",
-    fg = cp.text,
-  },
-  FloatBorder = {
-    bg = "#0f1419",
-    fg = cp.subtext1,
-  },
-  -- Popup menu colors
-  Pmenu = {
-    bg = c.pmenu_bg,
-    fg = cp.text,
-  },
-  PmenuSel = {
-    bg = c.pmenu_sel,
-    fg = cp.text,
-  },
-  -- Better line numbers
-  LineNr = {
-    fg = cp.overlay0,
-  },
-  CursorLineNr = {
-    fg = cp.text,
-    bold = true,
-  },
-  -- NvimTree with transparency support
-  NvimTreeNormal = {
-    bg = "NONE",
-    fg = cp.text,
-  },
-  NvimTreeFolderIcon = {
-    fg = cp.blue,
-  },
-  NvimTreeFolderArrowClosed = {
-    fg = cp.subtext1,
-  },
-  NvimTreeFolderArrowOpen = {
-    fg = cp.subtext1,
-  },
-  NvimTreeIndentMarker = {
-    fg = cp.overlay0,
-  },
-  NvimTreeWinSeparator = {
-    fg = c.cursor_line,
-    bg = "NONE",
-  },
-  -- Outline window separator
-  WinSeparator = {
-    fg = cp.subtext1,
-    bg = "NONE",
-  },
-}
+    Folded = { bg = c.cursor_line, fg = c.subtext1 },
+    Search = { bg = c.yellow, fg = c.base },
+    IncSearch = { bg = c.blue, fg = c.base },
+    Terminal = { bg = c.terminal_bg, fg = c.text },
 
--- apply all highlight overrides (called after theme load)
+    -- transparent sign column / line numbers
+    SignColumn = { bg = "NONE" },
+    LineNrAbove = { bg = "NONE" },
+    LineNrBelow = { bg = "NONE" },
+  }
+
+  local add = {
+    NvimTreeOpenedFolderName = { fg = c.green, bold = true },
+
+    -- treesitter groups
+    ["@keyword"] = { fg = c.mauve, bold = true },
+    ["@function"] = { fg = c.blue, bold = true },
+    ["@function.call"] = { fg = c.blue },
+    ["@method"] = { fg = c.blue, bold = true },
+    ["@method.call"] = { fg = c.blue },
+    ["@string"] = { fg = c.green },
+    ["@string.regex"] = { fg = c.yellow },
+    ["@number"] = { fg = c.peach },
+    ["@boolean"] = { fg = c.red },
+    ["@type"] = { fg = c.yellow, bold = true },
+    ["@type.builtin"] = { fg = c.yellow },
+    ["@constant"] = { fg = c.peach },
+    ["@constant.builtin"] = { fg = c.peach, bold = true },
+    ["@variable"] = { fg = c.text },
+    ["@variable.builtin"] = { fg = c.red },
+    ["@operator"] = { fg = c.sky },
+    ["@punctuation"] = { fg = c.overlay2 },
+    ["@punctuation.bracket"] = { fg = c.sky },
+    ["@comment"] = { fg = c.blue, italic = true },
+    ["@tag"] = { fg = c.peach },
+    ["@tag.attribute"] = { fg = c.yellow },
+    ["@property"] = { fg = c.teal },
+    ["@parameter"] = { fg = c.rosewater, italic = true },
+    ["@field"] = { fg = c.teal },
+    ["@namespace"] = { fg = c.yellow },
+    ["@include"] = { fg = c.teal },
+    ["@conditional"] = { fg = c.mauve, bold = true },
+    ["@repeat"] = { fg = c.mauve, bold = true },
+    ["@exception"] = { fg = c.red, bold = true },
+
+    -- floating windows
+    NormalFloat = { bg = c.float_bg, fg = c.text },
+    FloatBorder = { bg = c.float_bg, fg = c.subtext1 },
+
+    -- popup menu
+    Pmenu = { bg = c.base, fg = c.text },
+    PmenuSel = { bg = c.surface0, fg = c.text },
+
+    -- line numbers
+    LineNr = { fg = c.overlay0 },
+    CursorLineNr = { fg = c.text, bold = true },
+
+    -- nvim-tree (transparency support)
+    NvimTreeNormal = { bg = "NONE", fg = c.text },
+    NvimTreeFolderIcon = { fg = c.blue },
+    NvimTreeFolderArrowClosed = { fg = c.subtext1 },
+    NvimTreeFolderArrowOpen = { fg = c.subtext1 },
+    NvimTreeIndentMarker = { fg = c.overlay0 },
+    NvimTreeWinSeparator = { fg = c.cursor_line, bg = "NONE" },
+    WinSeparator = { fg = c.subtext1, bg = "NONE" },
+  }
+
+  return override, add
+end
+
+-- Apply all highlight overrides (called after theme load / on every ColorScheme).
 M.apply = function()
-  for group, settings in pairs(M.override) do
+  local override, add = build()
+  for group, settings in pairs(override) do
     vim.api.nvim_set_hl(0, group, settings)
   end
-  for group, settings in pairs(M.add) do
+  for group, settings in pairs(add) do
     vim.api.nvim_set_hl(0, group, settings)
   end
 end

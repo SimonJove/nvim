@@ -32,7 +32,7 @@ return {
     cmd = { "LazyGit", "LazyGitCurrentFile" },
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
-      { "<leader>gg", "<cmd>LazyGit<CR>", desc = "lazygit" },
+      { "<leader>gg", "<cmd>LazyGit<CR>", desc = "LazyGit" },
     },
   },
 
@@ -41,8 +41,8 @@ return {
     "nvim-telescope/telescope.nvim",
     optional = true,
     keys = {
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "git status" },
-      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "git commits" },
+      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Git status" },
+      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "Git commits" },
     },
   },
 }

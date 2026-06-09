@@ -55,6 +55,7 @@ return {
           end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
+          { name = "lazydev", group_index = 0 }, -- lua: require() paths + nvim API, ranked ahead of LSP
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },

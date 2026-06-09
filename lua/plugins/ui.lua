@@ -1,13 +1,12 @@
 return {
-  -- theme: catppuccin, transparent background, mocha/latte toggle
+  -- theme: catppuccin mocha, transparent background
   {
     "catppuccin/nvim",
     name = "catppuccin",
     lazy = false,
     priority = 1000, -- theme must load first
     opts = {
-      flavour = "auto", -- follows vim.o.background: dark→mocha, light→latte, makes <leader>ut toggle work
-      background = { light = "latte", dark = "mocha" },
+      flavour = "mocha", -- dark only; the light/latte toggle was removed
       transparent_background = true,
       integrations = {
         cmp = true,
@@ -18,6 +17,7 @@ return {
         which_key = true,
         mason = true,
         flash = true,
+        bufferline = true, -- let catppuccin theme the tabline to match the editor
       },
     },
     config = function(_, opts)
@@ -45,20 +45,9 @@ return {
         show_start = false,
         show_end = false,
       },
+      -- only filetypes this config actually uses (NvimTree was missing; the rest were dead)
       exclude = {
-        filetypes = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-        },
+        filetypes = { "help", "lazy", "mason", "NvimTree" },
       },
     },
   },
@@ -128,101 +117,6 @@ return {
         },
         sort_by = 'insert_after_current',
       },
-
-      highlights = {
-        fill = {
-          bg = "#141b26", -- Match terminal background
-        },
-        background = {
-          fg = "#8B949E",
-          bg = "#21262D",
-        },
-        buffer_selected = {
-          fg = "#cdd6f4",
-          bg = "#1e1e2e", -- Match editor background
-          bold = true,
-          italic = false,
-        },
-        buffer_visible = {
-          fg = "#C9D1D9",
-          bg = "#30363D",
-        },
-        close_button = {
-          fg = "#8B949E",
-          bg = "#21262D",
-        },
-        close_button_visible = {
-          fg = "#C9D1D9",
-          bg = "#30363D",
-        },
-        close_button_selected = {
-          fg = "#f38ba8",
-          bg = "#1e1e2e", -- Match editor background
-          bold = true,
-        },
-        tab_close = {
-          fg = "#F85149",
-          bg = "#141b26",
-        },
-        indicator_selected = {
-          fg = "#89b4fa",
-          bg = "#1e1e2e", -- Match editor background
-        },
-        modified = {
-          fg = "#D29922",
-          bg = "#21262D",
-        },
-        modified_visible = {
-          fg = "#F2CC60",
-          bg = "#30363D",
-        },
-        modified_selected = {
-          fg = "#a6e3a1",
-          bg = "#1e1e2e", -- Match editor background
-          bold = true,
-        },
-        separator = {
-          fg = "#141b26",
-          bg = "#21262D",
-        },
-        separator_selected = {
-          fg = "#1e1e2e",
-          bg = "#1e1e2e", -- Match editor background
-        },
-        separator_visible = {
-          fg = "#141b26",
-          bg = "#30363D",
-        },
-        -- Additional colorful highlights
-        duplicate_selected = {
-          fg = "#cdd6f4",
-          bg = "#1e1e2e", -- Match editor background
-          italic = true,
-        },
-        duplicate_visible = {
-          fg = "#C9D1D9",
-          bg = "#30363D",
-          italic = true,
-        },
-        duplicate = {
-          fg = "#8B949E",
-          bg = "#21262D",
-          italic = true,
-        },
-        numbers = {
-          fg = "#79C0FF",
-          bg = "#21262D",
-        },
-        numbers_visible = {
-          fg = "#79C0FF",
-          bg = "#30363D",
-        },
-        numbers_selected = {
-          fg = "#cdd6f4",
-          bg = "#1e1e2e", -- Match editor background
-          bold = true,
-        },
-      },
     },
   },
 
@@ -232,37 +126,40 @@ return {
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
+      -- palette, single-sourced from config.palette
+      local p = require("config.palette").get()
+
       -- Custom theme matching terminal background
       local custom_theme = {
         normal = {
-          a = { bg = "#89b4fa", fg = "#1e1e2e", gui = "bold" },
-          b = { bg = "#313244", fg = "#cdd6f4" },
-          c = { bg = "#1e1e2e", fg = "#bac2de" },
+          a = { bg = p.blue, fg = p.base, gui = "bold" },
+          b = { bg = p.surface0, fg = p.text },
+          c = { bg = p.base, fg = p.subtext1 },
         },
         insert = {
-          a = { bg = "#a6e3a1", fg = "#1e1e2e", gui = "bold" },
-          b = { bg = "#313244", fg = "#cdd6f4" },
-          c = { bg = "#1e1e2e", fg = "#bac2de" },
+          a = { bg = p.green, fg = p.base, gui = "bold" },
+          b = { bg = p.surface0, fg = p.text },
+          c = { bg = p.base, fg = p.subtext1 },
         },
         visual = {
-          a = { bg = "#f9e2af", fg = "#1e1e2e", gui = "bold" },
-          b = { bg = "#313244", fg = "#cdd6f4" },
-          c = { bg = "#1e1e2e", fg = "#bac2de" },
+          a = { bg = p.yellow, fg = p.base, gui = "bold" },
+          b = { bg = p.surface0, fg = p.text },
+          c = { bg = p.base, fg = p.subtext1 },
         },
         replace = {
-          a = { bg = "#f38ba8", fg = "#1e1e2e", gui = "bold" },
-          b = { bg = "#313244", fg = "#cdd6f4" },
-          c = { bg = "#1e1e2e", fg = "#bac2de" },
+          a = { bg = p.red, fg = p.base, gui = "bold" },
+          b = { bg = p.surface0, fg = p.text },
+          c = { bg = p.base, fg = p.subtext1 },
         },
         command = {
-          a = { bg = "#cba6f7", fg = "#1e1e2e", gui = "bold" },
-          b = { bg = "#313244", fg = "#cdd6f4" },
-          c = { bg = "#1e1e2e", fg = "#bac2de" },
+          a = { bg = p.mauve, fg = p.base, gui = "bold" },
+          b = { bg = p.surface0, fg = p.text },
+          c = { bg = p.base, fg = p.subtext1 },
         },
         inactive = {
-          a = { bg = "#313244", fg = "#6c7086" },
-          b = { bg = "#1e1e2e", fg = "#6c7086" },
-          c = { bg = "#1e1e2e", fg = "#6c7086" },
+          a = { bg = p.surface0, fg = p.overlay0 },
+          b = { bg = p.base, fg = p.overlay0 },
+          c = { bg = p.base, fg = p.overlay0 },
         },
       }
 
@@ -298,15 +195,15 @@ return {
             {
               "branch",
               icon = "",
-              color = { fg = "#89b4fa", gui = "bold" },
+              color = { fg = p.blue, gui = "bold" },
             },
             {
               "diff",
               symbols = { added = " ", modified = " ", removed = " " },
               diff_color = {
-                added = { fg = "#a6e3a1" },
-                modified = { fg = "#f9e2af" },
-                removed = { fg = "#f38ba8" },
+                added = { fg = p.green },
+                modified = { fg = p.yellow },
+                removed = { fg = p.red },
               },
             },
           },
@@ -322,7 +219,7 @@ return {
                 unnamed = "[No Name]",
                 newfile = " [New]",
               },
-              color = { fg = "#cdd6f4" },
+              color = { fg = p.text },
             },
           },
           lualine_x = {
@@ -331,10 +228,10 @@ return {
               sources = { "nvim_diagnostic" },
               symbols = { error = " ", warn = " ", info = " ", hint = " " },
               diagnostics_color = {
-                error = { fg = "#f38ba8" },
-                warn = { fg = "#f9e2af" },
-                info = { fg = "#89dceb" },
-                hint = { fg = "#94e2d5" },
+                error = { fg = p.red },
+                warn = { fg = p.yellow },
+                info = { fg = p.sky },
+                hint = { fg = p.teal },
               },
             },
             {
@@ -345,33 +242,33 @@ return {
                 end
                 return " LSP"
               end,
-              color = { fg = "#a6e3a1", gui = "bold" },
+              color = { fg = p.green, gui = "bold" },
             },
             {
               "filetype",
               colored = true,
               icon_only = false,
-              color = { fg = "#cba6f7" },
+              color = { fg = p.mauve },
             },
           },
           lualine_y = {
             {
               "encoding",
               fmt = string.upper,
-              color = { fg = "#fab387" },
+              color = { fg = p.peach },
             },
             {
               "fileformat",
               fmt = string.upper,
               icons_enabled = false,
-              color = { fg = "#fab387" },
+              color = { fg = p.peach },
             },
           },
           lualine_z = {
             {
               "location",
               separator = { left = "" },
-              color = { fg = "#1e1e2e", bg = "#89b4fa", gui = "bold" },
+              color = { fg = p.base, bg = p.blue, gui = "bold" },
             },
           },
         },
@@ -381,13 +278,13 @@ return {
           lualine_c = {
             {
               "filename",
-              color = { fg = "#6c7086" },
+              color = { fg = p.overlay0 },
             }
           },
           lualine_x = {
             {
               "location",
-              color = { fg = "#6c7086" },
+              color = { fg = p.overlay0 },
             }
           },
           lualine_y = {},

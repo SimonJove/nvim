@@ -19,6 +19,9 @@ require("lazy").setup({
       -- disable unneeded built-in plugins to speed up startup
       disabled_plugins = {
         "gzip", "tarPlugin", "tohtml", "tutor", "zipPlugin", "netrwPlugin",
+        -- spell is not enabled, so spellfile never does anything; matchit/matchparen are
+        -- KEPT on purpose (keyword % jumps for ruby/lua + matching-bracket highlight)
+        "spellfile",
       },
     },
   },

@@ -4,21 +4,15 @@ local map = vim.keymap.set
 -- exit insert mode with jk (replaces better-escape.nvim)
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 
--- clear search highlight
-map("n", "<leader>uh", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
+-- save file (n/i/x; <cmd> keeps the current mode, unlike NvChad's which leaves insert)
+map({ "n", "i", "x" }, "<C-s>", "<cmd>write<CR>", { desc = "Save file" })
+
+-- clear search highlight by pressing Esc in normal mode
+map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 
 -- toggle line numbers / wrap
 map("n", "<leader>un", "<cmd>set nu!<CR>", { desc = "Toggle line numbers" })
 map("n", "<leader>uw", "<cmd>set wrap!<CR>", { desc = "Toggle wrap" })
-
--- toggle light/dark theme (catppuccin mocha <-> latte, relies on background mapping in ui.lua)
-map("n", "<leader>ut", function()
-  vim.o.background = (vim.o.background == "dark") and "light" or "dark"
-  local ok, err = pcall(vim.cmd.colorscheme, "catppuccin")
-  if not ok then
-    vim.notify("catppuccin not installed yet: " .. tostring(err), vim.log.levels.WARN)
-  end
-end, { desc = "Toggle light/dark theme" })
 
 -- buffer close (migrated from old smart_close_buffer / close_all_buffers, keeps the fixed no-empty-buffer logic)
 map("n", "<leader>bd", function()
@@ -58,4 +52,4 @@ map("x", ">", ">gv", { desc = "Indent and keep selection" })
 map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next diagnostic" })
 map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Previous diagnostic" })
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic float" })
-map("n", "<leader>xx", vim.diagnostic.setloclist, { desc = "Diagnostic list (loclist)" })
+map("n", "<leader>cl", vim.diagnostic.setloclist, { desc = "Diagnostics to loclist" })
