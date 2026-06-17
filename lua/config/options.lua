@@ -23,6 +23,9 @@ opt.foldlevel = 99
 
 opt.swapfile = false
 
+-- system clipboard
+opt.clipboard = "unnamedplus"
+
 -- indentation
 opt.expandtab = true
 opt.shiftwidth = 2
